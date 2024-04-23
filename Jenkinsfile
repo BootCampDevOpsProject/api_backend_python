@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('verificar tools') {
             steps {
-                sh 'docker info'
+                sh 'docker-compose info'
             }
         }
     }
