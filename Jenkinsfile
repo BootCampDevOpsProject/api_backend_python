@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('instalar docker') {
             steps {
-                sh 'sudo apt-get update'
-                sh 'sudo apt-get install docker-ce docker-ce-cli containerd.io'
+                sh 'apt-get update'
+                sh 'apt-get install docker-ce docker-ce-cli containerd.io'
             }
         }
         stage('construir imagen') {
