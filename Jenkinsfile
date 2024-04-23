@@ -1,8 +1,7 @@
 pipeline {
-    agent anyy
-
+    agent any
     stages {
-        stage(0verificar tools) {
+        stage('verificar tools') {
             steps {
                 sh 'docker info'
             }
