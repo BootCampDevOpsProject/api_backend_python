@@ -1,9 +1,9 @@
 pipeline {
     agent any
     stages {
-        stage('verificar tools') {
+        stage('construir imagen') {
             steps {
-                sh 'docker-compose info'
+                sh 'docker build -t app-test-docker .'
             }
         }
     }
