@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - 8080:8080
+    volumes:
+      - jenkins_tutorial:/var/jenkins_home
+
+  docker:
+    image: docker:latest
+    container_name: docker
+    privileged: true  # Esto es necesario para ejecutar Docker dentro de un contenedor
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Puedes agregar más volúmenes si es necesario
+
+volumes:
+  jenkins_tutorial:
