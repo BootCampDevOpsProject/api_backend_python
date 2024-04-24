@@ -30,7 +30,7 @@ pipeline {
         }
         stage('login') {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'docker login -u "alexserret" -p "30923516luis" docker.io'
                 }
             }
         stage('subir imagen') {
