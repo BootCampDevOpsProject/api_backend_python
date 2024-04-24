@@ -8,7 +8,7 @@ pipeline {
         }
         stage('construir imagen') {
             steps {
-                sh 'docker build -t app-test-docker Dockerfile'
+                sh 'docker build -t app-test-docker .'
             }
         }
         stage('correr imagen') {
