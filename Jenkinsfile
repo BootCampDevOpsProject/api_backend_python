@@ -29,7 +29,7 @@ pipeline {
             }
         }
 
-        stage('subir imagen'){
+        stages('subir imagen'){
             steps {
                 script{
                         docker.withRegistry('', registryCredential ){
