@@ -3,6 +3,7 @@ pipeline {
     stages {
         stage('clonar repo') {
             steps {
+                sh 'rm -rf api_backend_python' // Eliminar el directorio existente
                 sh 'git clone https://github.com/BootCampDevOpsProject/api_backend_python'
             }
         }
