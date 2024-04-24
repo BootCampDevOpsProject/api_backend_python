@@ -28,20 +28,19 @@ pipeline {
                 sh 'docker run -d -p 5000:5000 --name api-backend app-test-docker'  // Ejecutar el contenedor nuevamente
             }
         }
-    }
-        stages('subir imagen'){
+        stage('subir imagen') {
             steps {
-                script{
-                        docker.withRegistry('', registryCredential ){
-                            dockerImage.push()
-                        }
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                    }
                 }
             }
         }
-        post { // Aquí especificamos acciones posteriores al pipeline
-            success { // Acciones a realizar en caso de éxito
-                slackSend(channel:'#alertas-jenkins', message: "SUCCESS! test")
+    }
+    post { // Aquí especificamos acciones posteriores al pipeline
+        success { // Acciones a realizar en caso de éxito
+            slackSend(channel:'#alertas-jenkins', message: "SUCCESS! test")
         }
-        }
-    
+    }
 }
