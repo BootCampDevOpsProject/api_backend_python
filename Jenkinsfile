@@ -4,13 +4,8 @@ pipeline {
         stage('clonar repo') {
             steps {
                 script {
-                    def directory = new File('api_backend_python')
-                    if (!directory.exists()) {
-                        sh 'git clone https://github.com/BootCampDevOpsProject/api_backend_python'
-                    } else {
-                        sh 'rm -rf api_backend_python'
-                        sh 'git clone https://github.com/BootCampDevOpsProject/api_backend_python'
-                    }
+                    sh 'if [ -d "api_backend_python" ]; then rm -rf api_backend_python; fi' // Eliminar el directorio existente si existe
+                    sh 'git clone https://github.com/BootCampDevOpsProject/api_backend_python'
                 }
             }
         }
