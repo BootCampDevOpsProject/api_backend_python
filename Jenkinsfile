@@ -4,6 +4,7 @@ pipeline {
     environment {
         dockerImage=''
         registry='alexserret/proyecto-devops'
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub_id')
     }
     stages {
         stage('clonar repo') {
@@ -29,17 +30,15 @@ pipeline {
         }
         stage('login') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub_id', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR')]) {
-                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                }
+            }
+        stage('subir imagen') {
+            steps {
+                sh 'docker push alexserret/app-test-docker:latest'
                 }
             }
         }
-        stage('subir imagen') {
-            steps {
-                sh 'docker push app-test-docker:latest'
-            }
-        }
-    }
     post { // Aquí especificamos acciones posteriores al pipeline
         success { // Acciones a realizar en caso de éxito
             slackSend(channel:'#alertas-jenkins', message: "SUCCESS! test")
