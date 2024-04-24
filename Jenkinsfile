@@ -35,7 +35,7 @@ pipeline {
             }
         stage('subir imagen') {
             steps {
-                sh 'docker push alexserret/proyecto-devops:app-test-docker:latest'
+                sh 'docker push alexserret/proyecto-devops:app-test-docker'
                 }
             }
         }
