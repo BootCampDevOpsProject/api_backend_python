@@ -38,9 +38,8 @@ pipeline {
                 }
             }
         }
-
-        success {
-            slackSend(channel:'#alertas-jenkins', message: "SUCCESS! test")
+        post { // Aquí especificamos acciones posteriores al pipeline
+            success { // Acciones a realizar en caso de éxito
+                slackSend(channel:'#alertas-jenkins', message: "SUCCESS! test")
         }
-    }
 }
