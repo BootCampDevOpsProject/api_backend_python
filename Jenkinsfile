@@ -28,11 +28,18 @@ pipeline {
                 sh 'docker run -d -p 5000:5000 --name api-backend app-test-docker'  // Ejecutar el contenedor nuevamente
             }
         }
+        stage('construir imagen docker registry') {
+            steps {
+                script {
+                    dockerImage = docker.build registry
+                }
+            }
+        } 
         stage('subir imagen') {
             steps {
                 script {
-                    docker.withRegistry('', registryCredential) {
-                        dockerImage.push()
+                         docker.withRegistry('', registryCredential) {
+                         dockerImage.push()
                     }
                 }
             }
