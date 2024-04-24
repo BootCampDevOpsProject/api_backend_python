@@ -18,7 +18,7 @@ pipeline {
         stage('construir imagen') {
             steps {
                 dir('api_backend_python') {
-                    sh 'docker build -t alexserret/proyecto-devops .'
+                    sh 'docker build -t alexserret/proyecto-devops:latest .'
                 }
             }
         }
