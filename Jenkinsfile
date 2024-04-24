@@ -18,7 +18,7 @@ pipeline {
         stage('construir imagen') {
             steps {
                 dir('api_backend_python') {
-                    sh 'docker build -t app-test-docker .'
+                    sh 'docker build -t app-test-docker:latest .'
                 }
             }
         }
