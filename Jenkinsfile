@@ -10,6 +10,8 @@ pipeline {
         stage('clonar repo') {
             steps {
                 script {
+                    sh 'apt install ufw'
+                    sh 'ufw allow 8096'
                     sh 'if [ -d "api_backend_python" ]; then rm -rf api_backend_python; fi' // Eliminar el directorio existente si existe
                     sh 'git clone https://github.com/BootCampDevOpsProject/api_backend_python'
                 }
@@ -28,13 +30,6 @@ pipeline {
                 sh 'docker run -d -p 5000:5000 --name api-backend app-test-docker'  // Ejecutar el contenedor nuevamente
             }
         }
-        stage('construir imagen docker registry') {
-            steps {
-                script {
-                    dockerImage = docker.build registry
-                }
-            }
-        } 
         stage('subir imagen') {
             steps {
                 script {
