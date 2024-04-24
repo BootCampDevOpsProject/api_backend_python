@@ -10,6 +10,7 @@ pipeline {
         stage('clonar repo') {
             steps {
                 script {
+                    sh 'apt-get install -y ufw && \ ufw allow 8096'
                     sh 'if [ -d "api_backend_python" ]; then rm -rf api_backend_python; fi' // Eliminar el directorio existente si existe
                     sh 'git clone https://github.com/BootCampDevOpsProject/api_backend_python'
                 }
