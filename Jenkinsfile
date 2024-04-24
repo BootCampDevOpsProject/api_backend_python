@@ -42,4 +42,6 @@ pipeline {
             success { // Acciones a realizar en caso de éxito
                 slackSend(channel:'#alertas-jenkins', message: "SUCCESS! test")
         }
+        }
+    }
 }
