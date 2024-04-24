@@ -31,9 +31,8 @@ pipeline {
         stage('subir imagen') {
             steps {
                 script {
-                    docker.withRegistry('', registryCredential) {
-                        def dockerImage = docker.build(registry + '/app-test-docker')
-                        dockerImage.push()
+                         docker.withRegistry('', registryCredential) {
+                         dockerImage.push()
                     }
                 }
             }
