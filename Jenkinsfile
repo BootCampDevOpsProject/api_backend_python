@@ -4,7 +4,7 @@ pipeline {
     environment {
         dockerImage=''
         registry='alexserret/proyecto-devops'
-        registryCredential = 'dockerhub_id'
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub_id')
     }
     stages {
         stage('clonar repo') {
