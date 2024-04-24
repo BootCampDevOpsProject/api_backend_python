@@ -28,7 +28,7 @@ pipeline {
                 sh 'docker run -d -p 5000:5000 --name api-backend app-test-docker'  // Ejecutar el contenedor nuevamente
             }
         }
-
+    }
         stages('subir imagen'){
             steps {
                 script{
@@ -43,5 +43,5 @@ pipeline {
                 slackSend(channel:'#alertas-jenkins', message: "SUCCESS! test")
         }
         }
-    }
+    
 }
