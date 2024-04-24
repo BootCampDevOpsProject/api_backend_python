@@ -28,19 +28,23 @@ pipeline {
                 sh 'docker run -d -p 5000:5000 --name api-backend app-test-docker'  // Ejecutar el contenedor nuevamente
             }
         }
+        stage('login') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                }
+            }
         stage('subir imagen') {
             steps {
-                script {
-                    docker.withRegistry('', registryCredential) {
-                    dockerImage.push()
-                    }
+                sh 'docker push app-test-docker:latest'
                 }
             }
         }
-    }
     post { // Aquí especificamos acciones posteriores al pipeline
         success { // Acciones a realizar en caso de éxito
             slackSend(channel:'#alertas-jenkins', message: "SUCCESS! test")
+        }
+        always {
+            sh 'docker logout'
         }
     }
 }
