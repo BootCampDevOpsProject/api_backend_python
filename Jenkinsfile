@@ -32,6 +32,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', registryCredential) {
+                        def dockerImage = docker.build(registry + '/app-test-docker')
                         dockerImage.push()
                     }
                 }
