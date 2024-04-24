@@ -18,7 +18,8 @@ pipeline {
         }
         stage('correr imagen') {
             steps {
-                sh 'docker run -d -p 5000:5000 app-test-docker'
+                sh 'docker rm -f api-backend || true'  // Eliminar el contenedor si existe
+                sh 'docker run -d -p 5000:5000 --name api-backend app-test-docker'  // Ejecutar el contenedor nuevamente
             }
         }
     }
