@@ -24,8 +24,8 @@ pipeline {
         }
         stage('correr imagen') {
             steps {
-                sh 'docker rm -f api-backend || true'  // Eliminar el contenedor si existe
-                sh 'docker run -d -p 5000:5000 --name api-backend app-test-docker'  // Ejecutar el contenedor nuevamente
+                sh 'docker rm -f proyecto-devops || true'  // Eliminar el contenedor si existe
+                sh 'docker run -d -p 5000:5000 --name proyecto-devops alexserret/proyecto-devops:latest'  // Ejecutar el contenedor nuevamente
             }
         }
         stage('login') {
