@@ -18,7 +18,7 @@ pipeline {
         stage('construir imagen') {
             steps {
                 dir('api_backend_python') {
-                    sh 'docker build -t app-test-docker:latest .'
+                    sh 'docker build -t alexserret/proyecto-devops .'
                 }
             }
         }
@@ -30,12 +30,12 @@ pipeline {
         }
         stage('login') {
             steps {
-                sh 'docker login -u "alexserret" -p "30923516luis" docker.io'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 }
             }
         stage('subir imagen') {
             steps {
-                sh 'docker push app-test-docker'
+                sh 'docker push alexserret/proyecto-devops:latest'
                 }
             }
         }
