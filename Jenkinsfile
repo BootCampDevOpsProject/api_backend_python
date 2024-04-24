@@ -32,7 +32,7 @@ pipeline {
         stage('subir imagen'){
             steps {
                 script{
-                        docker.withRegistry('' registryCredential){
+                        docker.withRegistry('', registryCredential ){
                             dockerImage.push()
                         }
                 }
