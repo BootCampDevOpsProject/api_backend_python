@@ -1,5 +1,11 @@
 pipeline {
     agent any
+
+    environment {
+        dockerImage=''
+        registry='alexserret/proyecto-devops'
+        registryCredential = 'dockerhub_id'
+    }
     stages {
         stage('clonar repo') {
             steps {
@@ -22,10 +28,19 @@ pipeline {
                 sh 'docker run -d -p 5000:5000 --name api-backend app-test-docker'  // Ejecutar el contenedor nuevamente
             }
         }
-    }
-    post {
+
+        stage('subir imagen'){
+            steps {
+                script{
+                        docker.withRegistry('' registryCredential){
+                            dockerImage.push()
+                        }
+                }
+            }
+        }
+
         success {
-            slackSend(channel:"#alertas-jenkins", message: "La prueba fallo con exito")
+            slackSend(channel:'#alertas-jenkins', message: "SUCCESS! test")
         }
     }
 }
