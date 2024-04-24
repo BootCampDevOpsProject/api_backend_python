@@ -25,7 +25,7 @@ pipeline {
     }
     post {
         success {
-            slacksend(channel:'#alertas-jenkins', message: "SUCCESS! test")
+            slacksend(channel:"#alertas-jenkins", message: "SUCCESS! test")
         }
     }
 }
