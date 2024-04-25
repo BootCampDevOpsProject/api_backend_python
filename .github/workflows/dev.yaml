@@ -80,6 +80,6 @@ jobs:
         with: 
           status: Finish
           channel: '#ci-alerts'
-          message: El ci finalizo con exito
-        if: always()    
+          message: El flujo de CI y actualización de repo GitOps finalizo con exito"
+        if: success()    
       
