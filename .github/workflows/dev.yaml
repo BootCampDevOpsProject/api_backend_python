@@ -27,7 +27,6 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          file: Dockerfile
           tags: serret18/api-backend:${{ github.sha }}
           
       - name: "Git checkout"
