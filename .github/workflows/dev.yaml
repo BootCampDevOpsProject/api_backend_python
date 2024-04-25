@@ -1,0 +1,59 @@
+name: ci-Dev-api
+on:
+  push:
+    branches: [ "development" ]
+  workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}      
+      -
+        name: Build and push - Api
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          file: Dockerfile
+          tags: serret18/api-backend:${{ github.sha }}
+          platforms: linux/amd64,linux/arm64
+          
+      - name: "Git checkout"
+        uses: "actions/checkout@v2"
+        with:
+          token: ${{ secrets.ACTIONS_SYSTEM_USER }}
+          repository: BootCampDevOpsProject/GitOps
+          ref: main
+    
+      - name: Setup Kustomize
+        uses: imranismail/setup-kustomize@v1
+        with:
+          kustomize-version: "3.6.1"
+
+      - name: Update Kubernetes resources - api
+        run: |
+          cd Backend/api-backend/overlays/development
+          kustomize edit set image serret18/api-backend=serret18/api-backend:${{ github.sha }}
+
+      - name: Commit files
+        run: |
+          git config --local user.email "luisenrique199717@gmail.com"
+          git config --local user.name "luisserret"
+          git commit -am "rolling image to tag $GITHUB_SHA"
+
+      - name: Push changes
+        run: |
+          git push https://github.com/BootCampDevOpsProject/GitOps.git main
+        env:
+          ACTIONS_SYSTEM_USER: ${{ secrets.ACTIONS_SYSTEM_USER }}
