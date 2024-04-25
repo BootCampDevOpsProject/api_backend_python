@@ -82,4 +82,13 @@ jobs:
           echo "Branch: ${{ github.ref }}"
           echo "Status: ${{ job.status }}"
         env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      
+      - name: Send notification on failure
+        if: failure()
+        run: |
+          echo "Commit hash: ${{ github.sha }}"
+          echo "Branch: ${{ github.ref }}"
+          echo "Status: ${{ job.status }}"
+        env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
