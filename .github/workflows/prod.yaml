@@ -41,7 +41,7 @@ jobs:
       - name: Update Kubernetes resources - api
         run: |
           git clone https://github.com/BootCampDevOpsProject/GitOps.git
-          cd Gitops/Backend/api-backend
+          cd Backend/api-backend
           kustomize edit set image serret18/api-backend=serret18/api-backend:${{ github.sha }}
           cat kustomization.yaml
 
