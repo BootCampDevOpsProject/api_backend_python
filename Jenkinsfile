@@ -41,7 +41,7 @@ pipeline {
         }
     post { // Aquí especificamos acciones posteriores al pipeline
         success { // Acciones a realizar en caso de éxito
-            slackSend(channel:'#alertas-jenkins', message: "La prueba fallo con exito")
+            slackSend(channel:'#alertas-jenkins', message: "SUCCESS")
         }
         always {
             sh 'docker logout'
