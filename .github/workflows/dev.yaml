@@ -43,7 +43,7 @@ jobs:
           git clone https://github.com/BootCampDevOpsProject/GitOps.git
           pwd
           ls -la
-          cd Backend/api-backend/base
+          cd GitOps/Backend/api-backend/base
           kustomize edit set image serret18/api-backend=serret18/api-backend:${{ github.sha }}
           cat kustomization.yaml
 
