@@ -6,7 +6,7 @@ on:
   
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: arm64v8/ubuntu:20.04
     steps:
       -
         name: Set up QEMU
@@ -24,6 +24,8 @@ jobs:
         name: Build and push - Api
         uses: docker/build-push-action@v5
         with:
+          context: .
+          platforms: linux/amd64,linux/arm64
           push: true
           file: Dockerfile
           tags: serret18/api-backend:${{ github.sha }}
