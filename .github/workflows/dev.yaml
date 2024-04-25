@@ -51,7 +51,7 @@ jobs:
           channel: '#ci-alerts'
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
-              if: always()
+        if: always()
           
       - name: "Git checkout"
         uses: "actions/checkout@v2"
