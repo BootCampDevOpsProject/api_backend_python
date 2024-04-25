@@ -1,4 +1,4 @@
-FROM arm32v6/python:alpine
+FROM arm64v8/python:slim
 
 WORKDIR /app
 
