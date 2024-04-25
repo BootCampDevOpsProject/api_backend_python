@@ -39,9 +39,6 @@ jobs:
           kustomize-version: "3.6.1"
 
       - name: Update Kubernetes resources - api
-        with:
-          token: ${{ secrets.ACTIONS_SYSTEM_USER }}
-          github_token: ${{ secrets.ACTIONS_SYSTEM_USER }}
         run: |
           git clone https://github.com/BootCampDevOpsProject/GitOps.git
           cd GitOps/Backend/api-backend/base
