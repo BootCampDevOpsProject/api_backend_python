@@ -6,7 +6,7 @@ on:
   
 jobs:
   build:
-    runs-on: arm64v8/ubuntu:20.04
+    runs-on: ubuntu-latest
     steps:
       -
         name: Set up QEMU
