@@ -37,6 +37,14 @@ jobs:
           file: Dockerfile
           tags: serret18/api-backend:${{ github.sha }}
           platforms: linux/amd64,linux/arm64
+      
+      - name: send status
+        uses: act10ns/slack@v2
+        with: 
+          channel: '#ci-alerts'
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+        if: always()
 
       - name: "Git checkout"
         uses: "actions/checkout@v2"
