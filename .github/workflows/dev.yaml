@@ -42,7 +42,7 @@ jobs:
 
       - name: Update Kubernetes resources - api
         run: |
-          cd Backend/api-backend/base
+          cd Backend/api-backend/overlays/development
           kustomize edit set image serret18/api-backend=serret18/api-backend:${{ github.sha }}
 
       - name: Commit files
