@@ -1,4 +1,4 @@
-name: ci-Dev-api
+name: ci-Prod-api
 on:
   push:
     branches: [ "main" ]
@@ -26,12 +26,15 @@ jobs:
         with:
           push: true
           file: Dockerfile
-          tags: serret18/api-backend:${{ github.sha }}
+          tags: serret18/api-backend-production:${{ github.sha }}
+          platforms: linux/amd64,linux/arm64
           
       - name: "Git checkout"
         uses: "actions/checkout@v2"
         with:
           token: ${{ secrets.ACTIONS_SYSTEM_USER }}
+          repository: BootCampDevOpsProject/GitOps
+          ref: main
     
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
@@ -40,10 +43,8 @@ jobs:
 
       - name: Update Kubernetes resources - api
         run: |
-          git clone https://github.com/BootCampDevOpsProject/GitOps.git
-          cd Backend/api-backend
-          kustomize edit set image serret18/api-backend=serret18/api-backend:${{ github.sha }}
-          cat kustomization.yaml
+          cd Backend/api-backend/overlays/production
+          kustomize edit set image serret18/api-backend-production=serret18/api-backend-production:${{ github.sha }}
 
       - name: Commit files
         run: |
@@ -52,9 +53,7 @@ jobs:
           git commit -am "rolling image to tag $GITHUB_SHA"
 
       - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.ACTIONS_SYSTEM_USER }}
-          branch: ${{ github.ref }}
-      
-     
+        run: |
+          git push https://github.com/BootCampDevOpsProject/GitOps.git main
+        env:
+          ACTIONS_SYSTEM_USER: ${{ secrets.ACTIONS_SYSTEM_USER }}
