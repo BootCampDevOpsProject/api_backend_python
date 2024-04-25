@@ -57,3 +57,21 @@ jobs:
           git push https://github.com/BootCampDevOpsProject/GitOps.git main
         env:
           ACTIONS_SYSTEM_USER: ${{ secrets.ACTIONS_SYSTEM_USER }}
+
+      - name: Send notification
+        if: success()
+        run: |
+          echo "Commit hash: ${{ github.sha }}"
+          echo "Branch: ${{ github.ref }}"
+          echo "Status: Success"
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      
+      - name: Send notification on failure
+        if: failure()
+        run: |
+          echo "Commit hash: ${{ github.sha }}"
+          echo "Branch: ${{ github.ref }}"
+          echo "Status: Failure"
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
