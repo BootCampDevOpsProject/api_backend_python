@@ -57,11 +57,4 @@ jobs:
           github_token: ${{ secrets.ACTIONS_SYSTEM_USER }}
           branch: ${{ github.ref }}
       
-      - name: Slack Notification Demo
-        uses: bryannice/gitactions-slack-notification@2.0.0
-        env: 
-          SLACK_CHANNEL: testchatgpt
-          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
-          SLACK_MESSAGE: 'Demo''ing the Slack Notification'
-          SLACK_TITLE: 'Slack Notification Demo'
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+     
