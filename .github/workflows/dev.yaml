@@ -32,6 +32,8 @@ jobs:
         uses: "actions/checkout@v2"
         with:
           token: ${{ secrets.ACTIONS_SYSTEM_USER }}
+          repository: BootCampDevOpsProject/GitOps
+          ref: main
     
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
@@ -40,15 +42,8 @@ jobs:
 
       - name: Update Kubernetes resources - api
         run: |
-          git clone https://github.com/BootCampDevOpsProject/GitOps.git
-          cd GitOps/Backend/api-backend/base
+          cd Backend/api-backend/base
           kustomize edit set image serret18/api-backend=serret18/api-backend:${{ github.sha }}
-          git config --local user.email "luisenrique199717@gmail.com"
-          git config --local user.name "luisserret"
-          git add .
-          git commit -m "test"
-          git push origin main
-
 
       - name: Commit files
         run: |
@@ -61,5 +56,3 @@ jobs:
         with:
           github_token: ${{ secrets.ACTIONS_SYSTEM_USER }}
           branch: main
-      
-      
