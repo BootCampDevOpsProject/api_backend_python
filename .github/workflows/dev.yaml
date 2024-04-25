@@ -74,6 +74,10 @@ jobs:
           git push https://github.com/BootCampDevOpsProject/GitOps.git main
         env:
           ACTIONS_SYSTEM_USER: ${{ secrets.ACTIONS_SYSTEM_USER }}
+      
+      - name: Commit files
+        run: |sefwe
+        werwe
 
       - name: Send notification
         if: always()
