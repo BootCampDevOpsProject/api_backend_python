@@ -26,7 +26,7 @@ jobs:
         uses: act10ns/slack@v2
         with: 
           status: starting
-          channel: '#mar-2024-weekend-batch'
+          channel: '#ci-alerts'
           message: Starting Docker Build image...
         if: always()
 
@@ -74,25 +74,12 @@ jobs:
           git push https://github.com/BootCampDevOpsProject/GitOps.git main
         env:
           ACTIONS_SYSTEM_USER: ${{ secrets.ACTIONS_SYSTEM_USER }}
-      
-      - name: Commit files
-        run: |sefwe
-        werwe
 
-      - name: Send notification
-        if: always()
-        run: |
-          echo "Commit hash: ${{ github.sha }}"
-          echo "Branch: ${{ github.ref }}"
-          echo "Status: ${{ job.status }}"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: send not final
+        uses: act10ns/slack@v2
+        with: 
+          status: Finish
+          channel: '#ci-alerts'
+          message: El ci finalizo con exito
+        if: always()    
       
-      - name: Send notification on failure
-        if: failure()
-        run: |
-          echo "Commit hash: ${{ github.sha }}"
-          echo "Branch: ${{ github.ref }}"
-          echo "Status: ${{ job.status }}"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
