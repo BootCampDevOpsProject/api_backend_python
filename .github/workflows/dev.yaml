@@ -22,12 +22,12 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       
-      - name: send not
+      - name: Enviar notificacion de comienzo de buil de imagen de docker
         uses: act10ns/slack@v2
         with: 
           status: starting
           channel: '#ci-alerts'
-          message: Starting Docker Build image...
+          message: Se cominenza a construir imagen de Docker
         if: always()
 
       - name: Build and push - Api
