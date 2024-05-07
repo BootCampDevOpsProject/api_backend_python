@@ -1,35 +1,60 @@
 name: ci-Dev-api
+
 on:
   push:
     branches: [ "development" ]
   workflow_dispatch:
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      
+      - name: Build with Maven
+        run: mvn clean install -f MyWebApp/pom.xml
+      
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.organization=my-org
+            -Dsonar.projectKey=my-Java-web-app
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-
+      
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
+      
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       
-      - name: Enviar notificacion de comienzo de buil de imagen de docker
+      - name: Enviar notificacion de comienzo de build de imagen de Docker
         uses: act10ns/slack@v2
         with: 
           status: starting
           channel: '#ci-alerts'
-          message: Se cominenza a construir imagen de Docker
+          message: Se comienza a construir la imagen de Docker
         if: always()
-
+      
       - name: Build and push - Api
         uses: docker/build-push-action@v5
         with:
@@ -45,41 +70,40 @@ jobs:
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
         if: always()
-
+      
       - name: "Git checkout"
         uses: "actions/checkout@v2"
         with:
           token: ${{ secrets.ACTIONS_SYSTEM_USER }}
           repository: BootCampDevOpsProject/GitOps
           ref: main
-
+      
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
         with:
           kustomize-version: "3.6.1"
-
+      
       - name: Update Kubernetes resources - api
         run: |
           cd Backend/api-backend/overlays/development
           kustomize edit set image serret18/api-backend=serret18/api-backend:${{ github.sha }}
-
+      
       - name: Commit files
         run: |
           git config --local user.email "luisenrique199717@gmail.com"
           git config --local user.name "luisserret"
           git commit -am "rolling image to tag $GITHUB_SHA"
-
+      
       - name: Push changes
         run: |
           git push https://github.com/BootCampDevOpsProject/GitOps.git main
         env:
           ACTIONS_SYSTEM_USER: ${{ secrets.ACTIONS_SYSTEM_USER }}
-
+      
       - name: send not final
         uses: act10ns/slack@v2
         with: 
           status: Finish
           channel: '#ci-alerts'
-          message: El flujo de CI y actualización de repo GitOps finalizo con exito"
-        if: success()    
-      
+          message: El flujo de CI y actualización de repo GitOps finalizó con éxito
+        if: success()
