@@ -93,8 +93,25 @@ jobs:
           # Disabling shallow clones is recommended for improving the relevancy of reporting
           fetch-depth: 0
 
+      
+      - name: Enviar notificacion de comienzo de sonarqube
+        uses: act10ns/slack@v2
+        with: 
+          status: starting
+          channel: '#ci-alerts'
+          message: Se comienza el Scanear codigo con SonarQube
+        if: success()
+
       - name: SonarQube analysis
         uses: SonarSource/sonarqube-scan-action@v2.0.1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on SonarQube, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}   # Add the URL of your instance to the variables of this repo with the name SONAR_HOST_URL (Settings > Secrets > Actions > add new repository secret)
+        
+      - name: Notificacion final sonarqube
+        uses: act10ns/slack@v2
+        with: 
+          status: Finish
+          channel: '#ci-alerts'
+          message: El Scaneo de codigo termino con exito.
+        if: success()
