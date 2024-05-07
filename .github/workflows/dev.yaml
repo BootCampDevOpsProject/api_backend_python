@@ -12,15 +12,15 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-        # Disabling shallow clones is recommended for improving the relevancy of reporting
-          fetch-depth: 0
-      - name: SonarQube analysis
-        uses: SonarSource/sonarqube-scan-action@v2.0.1
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on SonarQube, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}   # Add the URL of your instance to the variables of this repo with the name SONAR_HOST_URL (Settings > Secrets > Actions > add new repository secret)
+      # - uses: actions/checkout@v4
+      #   with:
+      #   # Disabling shallow clones is recommended for improving the relevancy of reporting
+      #     fetch-depth: 0
+      # - name: SonarQube analysis
+      #   uses: SonarSource/sonarqube-scan-action@v2.0.1
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on SonarQube, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
+      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}   # Add the URL of your instance to the variables of this repo with the name SONAR_HOST_URL (Settings > Secrets > Actions > add new repository secret)
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -95,4 +95,3 @@ jobs:
           message: El flujo de CI y actualización de repo GitOps finalizó con éxito
         if: success()
 
-        
