@@ -94,3 +94,5 @@ jobs:
           channel: '#ci-alerts'
           message: El flujo de CI y actualización de repo GitOps finalizó con éxito
         if: success()
+
+        
