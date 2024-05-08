@@ -38,7 +38,7 @@ jobs:
           push: true
           file: Dockerfile
           tags: serret18/api-backend:${{ github.sha }}
-          platforms: linux/amd64,linux/arm64
+          # platforms: linux/amd64,linux/arm64
       
       - name: send status
         uses: act10ns/slack@v2
