@@ -1,31 +1,35 @@
 name: ci-Prod-api
 
+# Se activa el workflow por medio de un push en la rama development
 on:
   push:
     branches: [ "main" ]
   workflow_dispatch:
-
+# Creación de job
 jobs:
   build:
+    # Server en el cual correra el job
     runs-on: ubuntu-latest
     env:
+     # Declarar variables globales a utilizar
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
+        # Instalación de QEMU para utilizar docker
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-      
+        # Instalación de Docker
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      
+        # Setear credenciales de dokcer hub
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      
+        # Creación de notificación a Slack
       - name: Enviar notificacion de comienzo de build de imagen de Docker
         uses: act10ns/slack@v2
         with: 
@@ -33,7 +37,8 @@ jobs:
           channel: '#ci-alerts'
           message: Se comienza a construir la imagen de Docker para Produccion
         if: always()
-      
+        
+        # Build y push the la imagen con tag consecutivo de github
       - name: Build and push - Api
         uses: docker/build-push-action@v5
         with:
@@ -41,7 +46,8 @@ jobs:
           file: Dockerfile
           tags: serret18/api-backend-production:${{ github.sha }}
           # platforms: linux/amd64,linux/arm64
-      
+
+        # Notificación del status del workflow a Slack
       - name: send status
         uses: act10ns/slack@v2
         with: 
@@ -49,39 +55,46 @@ jobs:
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
         if: always()
-      
+
+        # Verificar y clonar el repo GitOps
       - name: "Git checkout"
         uses: "actions/checkout@v2"
         with:
           token: ${{ secrets.ACTIONS_SYSTEM_USER }}
           repository: BootCampDevOpsProject/GitOps
           ref: main
-      
+
+        # Solicitar permisos
       - name: Change directory permissions
         run: chmod -R 777 $GITHUB_WORKSPACE
-      
+
+        # Instalación de kustomize
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
         with:
           kustomize-version: "3.6.1"
-      
+
+        # Actualizar la imagen en el repo GitOps
       - name: Update Kubernetes resources - api
         run: |
           cd Backend/api-backend/overlays/production
           kustomize edit set image serret18/api-backend-production=serret18/api-backend-production:${{ github.sha }}
-      
+
+        
       - name: Commit files
         run: |
           git config --local user.email "luisenrique199717@gmail.com"
           git config --local user.name "luisserret"
           git commit -am "rolling image to tag $GITHUB_SHA"
-      
+
+        # Push de cambios al repo GitOps
       - name: Push changes
         run: |
           git push https://github.com/BootCampDevOpsProject/GitOps.git main
         env:
           ACTIONS_SYSTEM_USER: ${{ secrets.ACTIONS_SYSTEM_USER }}
-      
+
+        # Notificación que el workflow se realizó con éxito a Slack
       - name: send not final
         uses: act10ns/slack@v2
         with: 
@@ -90,12 +103,13 @@ jobs:
           message: El flujo de CI y actualización de repo GitOps para produccion finalizó con éxito
         if: success()
 
+         # Verificación de acceso
       - uses: actions/checkout@v4
         with:
           # Disabling shallow clones is recommended for improving the relevancy of reporting
           fetch-depth: 0
 
-      
+        # Notificación de inicio de escaneo de código en Sonarqube
       - name: Enviar notificacion de comienzo de sonarqube
         uses: act10ns/slack@v2
         with: 
@@ -104,12 +118,14 @@ jobs:
           message: Se comienza el Scanear codigo con SonarQube para produccion
         if: success()
 
+        # Analisis de Sonarqube, seteando token y url del proyecto a utilizar en Sonarquube
       - name: SonarQube analysis
         uses: SonarSource/sonarqube-scan-action@v2.0.1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on SonarQube, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}   # Add the URL of your instance to the variables of this repo with the name SONAR_HOST_URL (Settings > Secrets > Actions > add new repository secret)
-        
+
+        # Notificación de de finalización de escaneo en Sonarqube
       - name: Notificacion final sonarqube
         uses: act10ns/slack@v2
         with: 
