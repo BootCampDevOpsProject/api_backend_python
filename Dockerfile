@@ -14,5 +14,5 @@ EXPOSE 5000
 ENV FLASK_APP=app.py
 # Variable dev para app.
 ENV FLASK_ENV=development
-# Ejecutar comando dentro del contedeor para correr la aplicación
+# Ejecutar comando dentro del contenedor para correr la aplicación
 CMD ["flask", "run", "--host", "0.0.0.0"]
