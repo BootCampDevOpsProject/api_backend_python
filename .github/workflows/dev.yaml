@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      SONAR_LOGIN: ${{ secrets.SONAR_LOGIN }}
 
     steps:
       - name: Set up QEMU
@@ -29,7 +31,7 @@ jobs:
         with: 
           status: starting
           channel: '#ci-alerts'
-          message: Se comienza a construir la imagen de Docker
+          message: Se comienza a construir la imagen de Docker para desarrollo
         if: always()
       
       - name: Build and push - Api
@@ -85,7 +87,7 @@ jobs:
         with: 
           status: Finish
           channel: '#ci-alerts'
-          message: El flujo de CI y actualización de repo GitOps finalizó con éxito
+          message: El flujo de CI y actualización de repo GitOps para desarrollo finalizó con éxito
         if: success()
 
       - uses: actions/checkout@v4
@@ -99,7 +101,7 @@ jobs:
         with: 
           status: starting
           channel: '#ci-alerts'
-          message: Se comienza el Scanear codigo con SonarQube
+          message: Se comienza el Scanear codigo con SonarQube para desarrollo
         if: success()
 
       - name: SonarQube analysis
@@ -113,5 +115,5 @@ jobs:
         with: 
           status: Finish
           channel: '#ci-alerts'
-          message: El Scaneo de codigo termino con exito.
+          message: El Scaneo de codigo en desarrollo termino con exito.
         if: success()
