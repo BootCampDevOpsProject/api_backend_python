@@ -80,7 +80,7 @@ jobs:
           cd Backend/api-backend/overlays/production
           kustomize edit set image serret18/api-backend-production=serret18/api-backend-production:${{ github.sha }}
 
-        
+        # Configuración de credenciales para hacer commits
       - name: Commit files
         run: |
           git config --local user.email "luisenrique199717@gmail.com"
