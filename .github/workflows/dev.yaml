@@ -11,7 +11,7 @@ jobs:
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      SONAR_LOGIN: ${{ secrets.SONAR_LOGIN }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
       - name: Set up QEMU
