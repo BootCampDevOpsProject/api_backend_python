@@ -1,18 +1,24 @@
-# Imagen a utilizar 
+# Imagen a utilizar para Python 
 FROM python:3-slim
-# Directorio
+
+# Directorio de trabajo
 WORKDIR /app
-# Requerimientos a copiar a la carpeta /app
+
+# Copiar los requerimientos a /app
 COPY requirements.txt /app
+
 # Instalar los requerimientos
 RUN pip install -r requirements.txt
+
 # Copiar todo al directorio actual
 COPY . .
-# Exponer el puerto de la app
+
+# Exponer el puerto 5000 para tener acceso fuera del contenedor
 EXPOSE 5000
-# Variable necesaria para app
+
+# Variable de entorno FLAS_APP y FLASK_ENV
 ENV FLASK_APP=app.py
-# Variable dev para app.
 ENV FLASK_ENV=development
-# Ejecutar comando dentro del contenedor para correr la aplicación
+
+# Iniciar aplicación
 CMD ["flask", "run", "--host", "0.0.0.0"]
