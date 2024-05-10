@@ -1,6 +1,6 @@
 name: ci-Prod-api
 
-# Se activa el workflow por medio de un push en la rama development
+# Se activa el workflow por medio de un push en la rama main
 on:
   push:
     branches: [ "main" ]
