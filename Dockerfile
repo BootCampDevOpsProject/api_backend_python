@@ -16,7 +16,7 @@ COPY . .
 # Exponer el puerto 5000 para tener acceso fuera del contenedor
 EXPOSE 5000
 
-# Variable de entorno FLAS_APP y FLASK_ENV
+# Variable de entorno FLASK_APP y FLASK_ENV
 ENV FLASK_APP=app.py
 ENV FLASK_ENV=development
 
