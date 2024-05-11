@@ -1,7 +1,7 @@
 # api_backend_python
 
 
-Aplicación desarrollada en Python
+Aplicación desarrollada en Python para la creación de Avatares.
 
 # GitHubActions
 Se integra la parte de GitHubActions para la integración continua (CI) que permite automatizar el mapa de compilación, pruebas y despliegue por medio de workflows que contienen una serie de jobs a ejecutar de manera secuencial para la CI.
