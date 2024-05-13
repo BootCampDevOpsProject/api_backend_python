@@ -77,7 +77,7 @@ jobs:
         # Actualizar la imagen en el repo GitOps
       - name: Update Kubernetes resources - api
         run: |
-          cd Backend/api-backend/overlays/production
+          cd Backend/api-backend-prod/overlays/production
           kustomize edit set image serret18/api-backend-production=serret18/api-backend-production:${{ github.sha }}
 
         # Configuración de credenciales para hacer commits
